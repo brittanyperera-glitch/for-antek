@@ -1,6 +1,4 @@
-# Vinyl Wrapped
 
-A Spotify Wrapped-style site: full-screen sections, spinning vinyl, music playback, and short explanations per record.
 
 ## Run locally
 
