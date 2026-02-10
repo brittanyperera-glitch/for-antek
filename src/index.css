@@ -2366,8 +2366,39 @@ body {
 
 .track-listing__slide {
   flex: 1;
-  max-width: 560px;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 720px;
   text-align: center;
+}
+
+.track-listing__image-wrap {
+  flex-shrink: 0;
+  width: 200px;
+}
+
+.track-listing__image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  display: block;
+}
+
+.track-listing__content {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+}
+
+@media (max-width: 560px) {
+  .track-listing__slide {
+    flex-direction: column;
+  }
+  .track-listing__image-wrap {
+    width: 160px;
+  }
 }
 
 .track-listing__side {

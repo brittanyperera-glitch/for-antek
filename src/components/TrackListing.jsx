@@ -6,6 +6,7 @@ const TRACKS = [
     number: 1,
     title: 'TIEDUPRIGHTNOW',
     songSrc: '/songs/tieduprightnow.mp3',
+    imageSrc: '/a.1.jpeg',
     description:
       'chapter one. i was britt. you were antek. you took the backseat of the car and I was just in front. the first of many glitches, because it seems the one song you\'d been bumping on your long and tiresome journey to Vietnam, I had already played. told you I had good music taste. this one is for the pre antek era, when you were Antoni to me and you were the random guy who rocked up in the green tshirt which is now mine (youre not getting it back)',
   },
@@ -14,6 +15,7 @@ const TRACKS = [
     number: 2,
     title: 'HELLO MISS JOHNSON',
     songSrc: '/songs/ytmp3free.cc_jack-harlow-hello-miss-johnson-youtubemp3free.org.mp3',
+    imageSrc: '/a.2.jpeg',
     description:
       '"Show you off to the city I\'m from\nAnd ride \'round with you, fine dine with you"\n\nthis one came in the interlude. while we were still adding "but no pressure like you\'re free to do what you want we haven\'t put any labels on anything" to the end of sentences. the \'habibi come to Warsaw\' period. the \'I really like you\' period. You showed me this song and told me it hit scary close to home. little did we know, Mr Harlow was a prophet. there\'s even a "We could go Monaco" line in there. glitch.',
   },
@@ -22,6 +24,7 @@ const TRACKS = [
     number: 3,
     title: 'FAIR PLAY',
     songSrc: '/songs/fair%20play.mp3',
+    imageSrc: '/a.3.jpeg',
     description:
       'head in your lap in the back of the defender. the time you were on the aux and the first time I went "hey this is a banger" and added one of your songs to my playlist. inbetween early mornings and night time work shifts, this song is the song that reminds me of that little routine- you sat, me horizontal with your hands in my hair',
   },
@@ -30,6 +33,7 @@ const TRACKS = [
     number: 4,
     title: "MAYBE IT'S YOU",
     songSrc: '/songs/Hajaj%20-%20Maybe%20Its%20You%20(Official%20Video).mp3',
+    imageSrc: '/a.4.jpeg',
     description:
       '"Who would\'ve thunk?\nWho would\'ve known?"\n\nnot me. Yet here we are. And I can\'t imagine it any other way. From tieduprightnow day one, to knowing that I really do think it\'s you. I love you.',
   },
@@ -38,6 +42,7 @@ const TRACKS = [
     number: 1,
     title: 'SUNNY',
     songSrc: '/songs/ytmp3free.cc_sunny-bobby-hebb-lyrics-youtubemp3free.org.mp3',
+    imageSrc: '/B1.jpeg',
     description:
       'Warsaw. This one is me and you in that apartment. You\'d rented a speaker, you\'d sorted the house out, on one meniscus. There was beef jerky and Diet Coke and yoghurt when I got there and this song playing on repeat for the 3 day trip where you went from \'the polish guy im seeing\' to my boyfriend, when \'I really really really like you\' became \'I love you.\'',
   },
@@ -46,6 +51,7 @@ const TRACKS = [
     number: 2,
     title: 'B-A-B-Y',
     songSrc: '/songs/ytmp3free.cc_carla-thomas-baby-official-audio-youtubemp3free.org.mp3',
+    imageSrc: '/B2.jpeg',
     description:
       'cooking pancakes in a baggy tshirt, dancing in the kitchen, trying to get ready but always being drawn back to bed. smiles and giggles and exploring a new city through your eyes and seeing your home and the alleys you used to smoke in and meeting your family. the bubble.',
   },
@@ -54,6 +60,7 @@ const TRACKS = [
     number: 3,
     title: 'LOVEBUG',
     songSrc: '/songs/ytmp3free.cc_jonas-brothers-lovebug-audio-youtubemp3free.org.mp3',
+    imageSrc: '/B3.jpeg',
     description:
       '"I never thought that I\'d catch this lovebug again"\n\nFor me it was a case of thinking I\'d never catch it at all. You proved me wrong. The song that I listen to and makes me think of all the good ways you make me feel, the one im thinking of when I look at you and say "the typa shit they write songs about". head over heels.',
   },
@@ -62,6 +69,7 @@ const TRACKS = [
     number: 4,
     title: 'BENNIE AND THE JETS',
     songSrc: '/songs/ytmp3free.cc_bennie-and-the-jets-youtubemp3free.org.mp3',
+    imageSrc: '/B4.jpeg',
     description:
       'singing in the shower, knowing almost none of the songs, with the shower head or my toothbrush as a microphone, hitting notes only audible by dogs. this song is happiness and joy and excitement and giddiness around you, it\'s the feeling that I can be myself and always have been able to with you. it\'s love.',
   },
@@ -180,11 +188,18 @@ export function TrackListing() {
         &#9664;
       </button>
       <div className="track-listing__slide">
-        <p className="track-listing__side">
-          SIDE {track.side} &ndash; {track.number}
-        </p>
-        <h2 className="track-listing__title">{track.title}</h2>
-        <DescriptionParagraphs text={track.description} />
+        {track.imageSrc && (
+          <div className="track-listing__image-wrap">
+            <img src={track.imageSrc} alt="" className="track-listing__image" />
+          </div>
+        )}
+        <div className="track-listing__content">
+          <p className="track-listing__side">
+            SIDE {track.side} &ndash; {track.number}
+          </p>
+          <h2 className="track-listing__title">{track.title}</h2>
+          <DescriptionParagraphs text={track.description} />
+        </div>
       </div>
       <button type="button" className="track-listing__arrow track-listing__arrow--right" onClick={goNext} aria-label="Next track">
         &#9654;
