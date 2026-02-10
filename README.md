@@ -18,6 +18,13 @@ Open the URL shown (usually `http://localhost:5173`).
 - **Audio** – When a section with a `trackSrc` is in view, that track plays; when you scroll away, it pauses.
 - **Placeholder content** – Edit `src/App.jsx`: update `SECTIONS` with your titles, explanations, and image URLs. Put MP3s in `public/` and set `trackSrc` to `/yourfile.mp3`.
 
+## Game flow (Valentine gift)
+
+1. **Welcome** – Quiz questions in `src/App.jsx` (QUIZ_QUESTIONS). After the last question, user clicks "proceed to the next level" then "Go".
+2. **Hearts game** – `src/components/HeartsGame.jsx`: platformer, collect 5 hearts, avoid eggs. On complete, user clicks "proceed to the final level".
+3. **Shopping game** – `src/components/ShoppingGame.jsx`: drag correct dinner ingredients from shelves into the trolley; optional shopping list clipboard. Correct set: steak, potatoes, butter, garlic, salt, oil, asparagus, red wine. Decoys and extra items on shelves. Win: all 8 correct, then "Continue".
+4. **Done** – Brief completion message.
+
 ## Add your content
 
 1. **Audio:** Add MP3 files to the `public/` folder (e.g. `public/track1.mp3`). In `SECTIONS`, set `trackSrc: '/track1.mp3'`.

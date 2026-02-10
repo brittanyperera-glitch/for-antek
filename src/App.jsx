@@ -4,6 +4,7 @@ import { LiquidBackground } from './LiquidBackground.jsx'
 import DecryptedText from './components/DecryptedText.jsx'
 import { GiftBox } from './components/GiftBox.jsx'
 import { HeartsGame } from './components/HeartsGame.jsx'
+import { EarnedPresent } from './components/EarnedPresent.jsx'
 
 const VALENTINE_INTRO_LINES = [
   'Welcome.',
@@ -582,6 +583,8 @@ export default function App() {
   const [question8Feedback, setQuestion8Feedback] = useState(null)
   const [proceedToNextLevelClicked, setProceedToNextLevelClicked] = useState(false)
   const [gameLevelActive, setGameLevelActive] = useState(false)
+  const [gamePhase, setGamePhase] = useState('hearts') // 'hearts' | 'present'
+  const [trackListingActive, setTrackListingActive] = useState(false)
 
   const handleQuestion1Select = (index) => {
     setQuestion1Selected(index)
@@ -764,7 +767,7 @@ export default function App() {
     return () => observers.forEach((clean) => clean())
   }, [])
 
-  // Background music: quiet, plays on welcome; stops on hearts game
+  // Background music: plays on welcome; stops during hearts game; resumes (lovers rock) for cooking/shopping game
   useEffect(() => {
     const bg = backgroundMusicRef.current
     if (!bg) return
@@ -776,26 +779,47 @@ export default function App() {
   useEffect(() => {
     const bg = backgroundMusicRef.current
     if (!bg) return
-    if (gameLevelActive || activeIndex === 1) {
+    if (gameLevelActive) {
+      if (gamePhase === 'hearts' || trackListingActive) {
+        bg.pause()
+      } else {
+        bg.play().catch(() => {})
+      }
+    } else if (activeIndex === 1) {
       bg.pause()
     } else if (activeIndex === 0) {
       bg.play().catch(() => {})
     }
-  }, [activeIndex, gameLevelActive])
+  }, [activeIndex, gameLevelActive, gamePhase, trackListingActive])
 
-  // Game level music: plays during hearts game
+  // Game level music: plays only during hearts game, for half the track then stops
   useEffect(() => {
     const gameMusic = gameLevelMusicRef.current
     if (!gameMusic) return
-    const onGameLevel = gameLevelActive || activeIndex === 1
-    if (onGameLevel) {
-      gameMusic.volume = 0.35
-      gameMusic.loop = true
-      gameMusic.play().catch(() => {})
-    } else {
+    const heartsActive = gameLevelActive && gamePhase === 'hearts'
+    if (!heartsActive) {
+      gameMusic.pause()
+      return
+    }
+    gameMusic.volume = 0.35
+    gameMusic.loop = false
+    gameMusic.currentTime = 0
+    gameMusic.play().catch(() => {})
+
+    const stopAtHalf = () => {
+      const d = gameMusic.duration
+      if (Number.isFinite(d) && d > 0 && gameMusic.currentTime >= d / 2) {
+        gameMusic.pause()
+        gameMusic.currentTime = 0
+        gameMusic.removeEventListener('timeupdate', stopAtHalf)
+      }
+    }
+    gameMusic.addEventListener('timeupdate', stopAtHalf)
+    return () => {
+      gameMusic.removeEventListener('timeupdate', stopAtHalf)
       gameMusic.pause()
     }
-  }, [activeIndex, gameLevelActive])
+  }, [gameLevelActive, gamePhase])
 
   // Start background music on first user interaction if autoplay was blocked
   useEffect(() => {
@@ -818,8 +842,14 @@ export default function App() {
         <audio ref={correctAnswerSoundRef} src={CORRECT_ANSWER_SOUND_SRC} preload="auto" />
         <audio ref={wrongAnswerSoundRef} src={WRONG_ANSWER_SOUND_SRC} preload="auto" />
         <section className="section section-game section-game--full" data-section="game">
-          <h1 className="section-game__title">Recreate the first meal you cooked me</h1>
-          <HeartsGame onComplete={() => {}} />
+          {gamePhase === 'hearts' ? (
+            <>
+              <h1 className="section-game__title">Recreate the first meal you cooked me</h1>
+              <HeartsGame onComplete={() => setGamePhase('present')} />
+            </>
+          ) : (
+            <EarnedPresent onShowTrackListing={() => setTrackListingActive(true)} />
+          )}
         </section>
       </div>
     )
